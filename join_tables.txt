@@ -1,0 +1,1 @@
+select u.username,c.operation,c.opernad_a,c.opearand_b,c.result from calcualtions c join users u on c.user_id = u.id

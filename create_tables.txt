@@ -1,0 +1,17 @@
+create table users(
+	id SERIAL PRIMARY KEY,
+	username varchar(50) not null unique,
+	email varchar(100) not null unique,
+	created_at TIMESTAMP default CURRENT_TIMESTAMP
+	
+);
+create table calcualtions (
+	id SERIAL PRIMARY KEY,
+	operation varchar(20) not null,
+	opernad_a float not null,
+	opearand_b float not null,
+	result float not null,
+	timestamp TIMESTAMP default CURRENT_TIMESTAMP,
+	user_id integer NOT NULL,
+	FOREIGN KEY (user_id) references users(id) on delete cascade
+);

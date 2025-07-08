@@ -1,0 +1,4 @@
+insert into users(username,email) values
+	('dom', 'dom@urso.com'),
+	('coolcat', 'cool@cats.com');
+

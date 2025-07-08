@@ -1,0 +1,4 @@
+insert into calcualtions(operation,opernad_a,opearand_b,result,user_id) values
+	('add',2,3,5,1),
+	('divide',10,2,5,1),
+	('multiply', 4,5,20,2);
