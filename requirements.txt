@@ -40,3 +40,4 @@ typing_extensions==4.12.2
 urllib3==2.2.3
 uvicorn==0.32.0
 passlib[bcrypt]==1.7.4
+pydantic[email]
