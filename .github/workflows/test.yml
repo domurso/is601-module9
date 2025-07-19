@@ -1,9 +1,9 @@
 name: CI/CD
 on:
   push:
-    branches: [ master ]
+    branches: [ master module10]
   pull_request:
-    branches: [ master ]
+    branches: [ master module10 ]
 jobs:
   test:
     runs-on: ubuntu-latest
