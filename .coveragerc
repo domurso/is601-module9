@@ -1,0 +1,4 @@
+[run]
+data_file = /app/coverage/.coverage
+source = app
+debug = trace
