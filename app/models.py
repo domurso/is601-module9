@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, validator, StrictFloat, StrictInt
 from pydantic import field_serializer
 from datetime import datetime
 import bcrypt
@@ -65,7 +65,7 @@ class UserRead(BaseModel):
     id: int
     username: str
     email: EmailStr
-    created_at: datetime  # Changed to datetime to match SQLAlchemy type
+    created_at: datetime
 
     @field_serializer('created_at')
     def serialize_created_at(self, created_at: datetime) -> str:
@@ -84,9 +84,9 @@ class CalculationCreate(BaseModel):
     Includes operation, operand_a, operand_b, and user_id.
     """
     operation: str = Field(..., max_length=20, description="Operation type (add, subtract, multiply, divide)")
-    operand_a: float = Field(..., description="First operand")
-    operand_b: float = Field(..., description="Second operand")
-    user_id: int = Field(..., description="ID of the user performing the calculation")
+    operand_a: StrictFloat = Field(..., description="First operand")
+    operand_b: StrictFloat = Field(..., description="Second operand")
+    user_id: StrictInt = Field(..., description="ID of the user performing the calculation")
 
     @validator("operation")
     def validate_operation(cls, value):
@@ -105,7 +105,7 @@ class CalculationRead(BaseModel):
     operand_a: float
     operand_b: float
     result: float
-    timestamp: datetime  # Changed to datetime to match SQLAlchemy type
+    timestamp: datetime
     user_id: int
 
     @field_serializer('timestamp')

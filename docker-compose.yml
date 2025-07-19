@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # Service: web
   web:
     build: .
     container_name: fastapi_calculator
@@ -9,6 +6,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - coverage_data:/app/coverage
+      - pytest_cache_data:/app/.pytest_cache
     environment:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
@@ -16,11 +15,10 @@ services:
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     depends_on:
       db:
-        condition: service_healthy  # Wait for db to be healthy
+        condition: service_healthy
     networks:
       - app-network
 
-  # Service: db (PostgreSQL)
   db:
     image: postgres
     container_name: postgres_db
@@ -40,7 +38,6 @@ services:
     networks:
       - app-network
 
-  # Service: pgadmin
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -61,6 +58,10 @@ volumes:
   postgres_data:
     driver: local
   pgadmin_data:
+    driver: local
+  coverage_data:
+    driver: local
+  pytest_cache_data:
     driver: local
 
 networks:

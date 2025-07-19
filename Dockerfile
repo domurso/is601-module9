@@ -12,14 +12,15 @@ RUN apt-get update && \
    python -m pip install --upgrade pip setuptools>=70.0.0 wheel && \
    groupadd -r appgroup && \
    useradd -r -g appgroup appuser && \
-   mkdir -p /app/coverage/html && \
-   chown -R appuser:appgroup /app/coverage
+   mkdir -p /app/coverage/html /app/.pytest_cache && \
+   chown -R appuser:appgroup /app/coverage /app/.pytest_cache && \
+   chmod -R u+rw /app/coverage /app/.pytest_cache
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+   playwright install --with-deps
 
 COPY . .
-RUN chown -R appuser:appgroup /app
 
 USER appuser
 
