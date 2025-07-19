@@ -214,7 +214,7 @@ async def create_user(user: UserCreate, db: Session = Depends(get_db)):
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
-        return UserRead.from_orm(db_user)
+        return UserRead.model_validate(db_user)
     except Exception as e:
         logger.error(f"Create User Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
@@ -228,7 +228,7 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
         db_user = db.query(User).filter(User.id == user_id).first()
         if not db_user:
             raise HTTPException(status_code=404, detail="User not found")
-        return UserRead.from_orm(db_user)
+        return UserRead.model_validate(db_user)
     except Exception as e:
         logger.error(f"Get User Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
@@ -262,7 +262,7 @@ async def create_calculation(calc: CalculationCreate, db: Session = Depends(get_
         db.add(db_calc)
         db.commit()
         db.refresh(db_calc)
-        return CalculationRead.from_orm(db_calc)
+        return CalculationRead.model_validate(db_calc)
     except Exception as e:
         logger.error(f"Create Calculation Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
@@ -276,7 +276,7 @@ async def get_calculation(calc_id: int, db: Session = Depends(get_db)):
         db_calc = db.query(Calculation).filter(Calculation.id == calc_id).first()
         if not db_calc:
             raise HTTPException(status_code=404, detail="Calculation not found")
-        return CalculationRead.from_orm(db_calc)
+        return CalculationRead.model_validate(db_calc)
     except Exception as e:
         logger.error(f"Get Calculation Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
@@ -291,7 +291,7 @@ async def get_user_calculations(user_id: int, db: Session = Depends(get_db)):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         calculations = db.query(Calculation).filter(Calculation.user_id == user_id).all()
-        return [CalculationRead.from_orm(calc) for calc in calculations]
+        return [CalculationRead.model_validate(calc) for calc in calculations]
     except Exception as e:
         logger.error(f"Get User Calculations Error: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))

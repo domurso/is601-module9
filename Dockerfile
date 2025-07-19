@@ -11,7 +11,9 @@ RUN apt-get update && \
    rm -rf /var/lib/apt/lists/* && \
    python -m pip install --upgrade pip setuptools>=70.0.0 wheel && \
    groupadd -r appgroup && \
-   useradd -r -g appgroup appuser
+   useradd -r -g appgroup appuser && \
+   mkdir -p /app/coverage/html && \
+   chown -R appuser:appgroup /app/coverage
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

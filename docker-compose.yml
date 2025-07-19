@@ -13,9 +13,10 @@ services:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
       DATABASE_URL: postgresql://postgres:postgres@db:5432/fastapi_db
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     depends_on:
-      - db
+      db:
+        condition: service_healthy  # Wait for db to be healthy
     networks:
       - app-network
 
@@ -41,13 +42,13 @@ services:
 
   # Service: pgadmin
   pgadmin:
-    image: dpage/pgadmin4  # Updated to a newer version
+    image: dpage/pgadmin4
     container_name: pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "5050:80"  # Ensure port 5050 is free or change if necessary
+      - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:

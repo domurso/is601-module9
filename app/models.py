@@ -3,6 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import field_serializer
+from datetime import datetime
 import bcrypt
 from typing import Optional
 
@@ -63,10 +65,17 @@ class UserRead(BaseModel):
     id: int
     username: str
     email: EmailStr
-    created_at: str
+    created_at: datetime  # Changed to datetime to match SQLAlchemy type
+
+    @field_serializer('created_at')
+    def serialize_created_at(self, created_at: datetime) -> str:
+        """
+        Serialize created_at to ISO 8601 string.
+        """
+        return created_at.isoformat()
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Pydantic schemas for Calculation
 class CalculationCreate(BaseModel):
@@ -96,11 +105,18 @@ class CalculationRead(BaseModel):
     operand_a: float
     operand_b: float
     result: float
-    timestamp: str
+    timestamp: datetime  # Changed to datetime to match SQLAlchemy type
     user_id: int
 
+    @field_serializer('timestamp')
+    def serialize_timestamp(self, timestamp: datetime) -> str:
+        """
+        Serialize timestamp to ISO 8601 string.
+        """
+        return timestamp.isoformat()
+
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Password hashing and verification functions
 def hash_password(password: str) -> str:

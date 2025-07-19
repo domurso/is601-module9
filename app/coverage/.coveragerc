@@ -1,6 +1,6 @@
 [pytest]
 testpaths = tests
-addopts = --cov=app --cov-report=term-missing --cov-report=html:/app/coverage/html --cov-config=.coveragerc
+addopts = --cov=app --cov-report=term-missing --cov-report=html:/app/coverage/html
 python_files = test_*.py *_test.py
 python_classes = Test*
 python_functions = test_*
@@ -14,3 +14,4 @@ filterwarnings =
     ignore::DeprecationWarning
     ignore::PendingDeprecationWarning
     ignore::ResourceWarning
+
