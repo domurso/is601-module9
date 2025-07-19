@@ -8,10 +8,13 @@ services:
       - .:/app
       - coverage_data:/app/coverage
       - pytest_cache_data:/app/.pytest_cache
+      - playwright_data:/home/appuser/.cache/ms-playwright
     environment:
       PYTHONDONTWRITEBYTECODE: 1
       PYTHONUNBUFFERED: 1
       DATABASE_URL: postgresql://postgres:postgres@db:5432/fastapi_db
+      PLAYWRIGHT_BROWSERS_PATH: /home/appuser/.cache/ms-playwright
+      COVERAGE_DEBUG: trace,dataio,dataop
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     depends_on:
       db:
@@ -62,6 +65,8 @@ volumes:
   coverage_data:
     driver: local
   pytest_cache_data:
+    driver: local
+  playwright_data:
     driver: local
 
 networks:
